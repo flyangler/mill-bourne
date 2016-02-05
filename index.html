@@ -4,19 +4,22 @@
     <title>Mill Bourne Card Game</title>
     
 <!------Bootstrap---------->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
-    
-    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 <!--------Our Style-------->
 <link rel="stylesheet" href="assets/styles/style.css">
-    
+
 </head>
 
 <body ng-controller="MainController as mc">
-
-    {{2+8}}
-    {{mc.test}}
+    total Cards: {{deck.length}}
+    <ul>
+        <li ng-repeat="card in deck">
+            <div>
+                <h3>{{card.title}}</h3>
+                <img ng-src="{{card.img}}" alt="{{card.title}}" height="120">
+            </div>
+        </li>
+    </ul>
      
     <!--JQuery-->
     <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
