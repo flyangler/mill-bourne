@@ -1,17 +1,52 @@
 app.controller('MainController', function ($scope, CardService) {
-    
+    var mc = this;
     function Game(options){
         $scope.deck = CardService.getDeck();
         $scope.players = [];
-        
-        while(options.totalPlayers){
+        $scope.activePlayerIndex = 0;
+        var playerCount = options.totalPlayers;
+        while(playerCount){
             $scope.players.push(new Player(prompt("Player Name"), prompt("WHAT IS YOUR FAVORITE COLOR?")));
-            options.totalPlayers--;
+            playerCount--;
         }
         
         deal();
+        startTurn();
     }
     
+    function startTurn(){
+        var activePlayer = $scope.players[$scope.activePlayerIndex];
+        activePlayer.hand.push(takeCard());
+    }
+    
+    $scope.playCard = function (){
+        //TODO:call is valid play function
+        if(!mc.activeCard && !mc.currentTarget){
+            return;
+        }
+        
+        mc.activeCard.effect(mc.currentTarget);
+        $scope.activePlayerIndex++;
+        if($scope.activePlayerIndex > $scope.players.length - 1){
+            $scope.activePlayerIndex = 0;
+        }
+        //TODO REMOVE PLAYED CARD;
+        
+        mc.activeCard = '';
+        mc.currentTarget = '';
+        
+        startTurn(); 
+    }
+    
+    function victory(trip){
+        for(var i = 0; i < $scope.players.length; i++){
+            var currentPlayer = $scope.players[i];
+            if(currentPlayer.distance >= trip){
+                $scope.winner = currentPlayer;
+                return true;
+            }
+        }
+    }
     
     function takeCard(){
         if($scope.deck.length > 0){
@@ -41,9 +76,14 @@ app.controller('MainController', function ($scope, CardService) {
         player.distance =  0;
         player.isStopped = true;
         player.hand = [];
+        player.score = 0;
         
         player.setImmunity = function(type){
             player.immunities[type] = true;
+        }
+        
+        player.addPenalty = function(value){
+            player.score -= value;
         }
         
         player.move = function(distance){
@@ -66,6 +106,11 @@ app.controller('MainController', function ($scope, CardService) {
             player.limit = value;
         }
     }
+    
+    
+    new Game({
+        totalPlayers: 3
+    })
     
 });
 

@@ -12,11 +12,16 @@
 
 <body ng-controller="MainController as mc">
     total Cards: {{deck.length}}
+    <button ng-click="playCard()">PLAY {{mc.activeCard.title}} for {{mc.currentTarget.name}}</button>
     <ul>
-        <li ng-repeat="card in deck">
-            <div>
-                <h3>{{card.title}}</h3>
-                <img ng-src="{{card.img}}" alt="{{card.title}}" height="120">
+        <li ng-repeat="player in players">
+            <div style="background-color: {{player.color}}">
+                <h3 ng-click="mc.currentTarget = player">{{player.name}} has Traveled: {{player.distance}}km</h3>
+                <ul class="list-inline">
+                    <li class="list-group-item card" ng-repeat="card in player.hand" ng-click="mc.activeCard = card">
+                        <img ng-src="{{card.img}}" alt="{{card.title}}" height="120">
+                    </li>
+                </ul>
             </div>
         </li>
     </ul>
