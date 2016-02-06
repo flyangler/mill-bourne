@@ -28,11 +28,21 @@ height: 200px;
 margin-top: 10px 
 }
 .nextPlayer{
-background-color: darkmagenta;
+background-color: darkgreen;
 position: absolute;
 top: 0;
 bottom: 0;
 left: 0;
 right: 0;
 z-index: 99999;
+}
+
+.trash{
+    height:100px;
+    top: 20px;
+    right: 20px;
+    float:right;
+}
+.trash img{
+    height:100px;
 }

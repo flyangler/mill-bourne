@@ -2,7 +2,7 @@ app.controller('MainController', function ($scope, CardService) {
     var mc = this;
     function Game(options) {
         $scope.deck = CardService.getDeck();
-        $scope.players = [new Player("John", "black"), new Player("Sara", "peru"),new Player("Tim", "red")];  // {name:"John", color:"black"},{name:"Sara", color:"Peru"},{name:"Jake", color:"green"}
+        $scope.players = [new Player("John", "black"), new Player("Sara", "peru"), new Player("Tim", "red")];  // {name:"John", color:"black"},{name:"Sara", color:"Peru"},{name:"Jake", color:"green"}
         $scope.activePlayerIndex = 0;
         var playerCount = options.totalPlayers
         // while (playerCount) {
@@ -14,7 +14,7 @@ app.controller('MainController', function ($scope, CardService) {
         $scope.startTurn();
     }
 
-    $scope.startTurn = function() {
+    $scope.startTurn = function () {
         $scope.readyNext = false;
         $scope.activePlayer = $scope.players[$scope.activePlayerIndex];
         $scope.activePlayer.hand.push(takeCard());
@@ -27,11 +27,7 @@ app.controller('MainController', function ($scope, CardService) {
         }
 
         mc.activeCard.effect(mc.currentTarget);
-        $scope.activePlayerIndex++;
-        if ($scope.activePlayerIndex > $scope.players.length - 1) {
-            $scope.activePlayerIndex = 0;
-        }
-        $scope.nextPlayer = $scope.players[$scope.activePlayerIndex]
+
         for (var i = 0; i < $scope.activePlayer.hand.length; i++) {
             var card = $scope.activePlayer.hand[i];
             if (mc.activeCard === card) {
@@ -47,12 +43,22 @@ app.controller('MainController', function ($scope, CardService) {
 
     }
     function nextPlayer() {
-        
-        //   if ($scope.activePlayerIndex > $scope.players.length - 1) {
-        //     $scope.activePlayerIndex = 0;
-        //   }
-        //   startTurn();
+        $scope.activePlayerIndex++;
+        if ($scope.activePlayerIndex > $scope.players.length - 1) {
+            $scope.activePlayerIndex = 0;
+        }
+        $scope.nextPlayer = $scope.players[$scope.activePlayerIndex]
         $scope.readyNext = true
+    }
+    $scope.discard = function () {
+        for (var i = 0; i < $scope.activePlayer.hand.length; i++) {
+            var card = $scope.activePlayer.hand[i];
+            if (mc.activeCard === card) {
+                $scope.activePlayer.hand.splice($scope.activePlayer.hand.indexOf(card), 1)
+
+            }
+        }
+        nextPlayer();
     }
 
 
