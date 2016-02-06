@@ -1,0 +1,18 @@
+.player {
+font-weight: bolder;
+font-style: italic;
+font-size: 14px;
+color: black;
+
+
+}
+.card{
+    display: inline-block;
+}
+
+.background {
+background-image: url('/assets/img/cards/back3.png');
+background-repeat:no-repeat;
+height: 200px;
+margin-top: 10px 
+}

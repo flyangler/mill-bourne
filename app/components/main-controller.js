@@ -1,117 +1,124 @@
 app.controller('MainController', function ($scope, CardService) {
     var mc = this;
-    function Game(options){
+    function Game(options) {
         $scope.deck = CardService.getDeck();
-        $scope.players = [];
+        $scope.players = [];  // {name:"John", color:"black"},{name:"Sara", color:"Peru"},{name:"Jake", color:"green"}
         $scope.activePlayerIndex = 0;
-        var playerCount = options.totalPlayers;
-        while(playerCount){
+        var playerCount = options.totalPlayers
+        while (playerCount) {
             $scope.players.push(new Player(prompt("Player Name"), prompt("WHAT IS YOUR FAVORITE COLOR?")));
             playerCount--;
         }
-        
+
         deal();
         startTurn();
     }
-    
-    function startTurn(){
-        var activePlayer = $scope.players[$scope.activePlayerIndex];
-        activePlayer.hand.push(takeCard());
+
+    function startTurn() {
+        $scope.activePlayer = $scope.players[$scope.activePlayerIndex];
+        $scope.activePlayer.hand.push(takeCard());
     }
-    
-    $scope.playCard = function (){
+
+    $scope.playCard = function () {
         //TODO:call is valid play function
-        if(!mc.activeCard && !mc.currentTarget){
+        if (!mc.activeCard && !mc.currentTarget) {
             return;
         }
-        
+
         mc.activeCard.effect(mc.currentTarget);
         $scope.activePlayerIndex++;
-        if($scope.activePlayerIndex > $scope.players.length - 1){
+        if ($scope.activePlayerIndex > $scope.players.length - 1) {
             $scope.activePlayerIndex = 0;
         }
-        //TODO REMOVE PLAYED CARD;
-        
+
+        for (var i = 0; i < $scope.activePlayer.hand.length; i++) {
+            var card = $scope.activePlayer.hand[i];
+            if (mc.activeCard === card) {
+                $scope.activePlayer.hand.splice($scope.activePlayer.hand.indexOf(card), 1)
+
+            }
+
+        }
         mc.activeCard = '';
         mc.currentTarget = '';
-        
-        startTurn(); 
+        mc.discard = '';
+        startTurn();
     }
-    
-    function victory(trip){
-        for(var i = 0; i < $scope.players.length; i++){
+
+    function victory(trip) {
+        for (var i = 0; i < $scope.players.length; i++) {
             var currentPlayer = $scope.players[i];
-            if(currentPlayer.distance >= trip){
+            if (currentPlayer.distance >= trip) {
                 $scope.winner = currentPlayer;
                 return true;
             }
         }
     }
-    
-    function takeCard(){
-        if($scope.deck.length > 0){
-            return $scope.deck.pop();        
+
+    function takeCard() {
+        if ($scope.deck.length > 0) {
+            return $scope.deck.pop();
         }
     }
     
     // game.isValidPlay(card, player)
     
-    function deal(){
-        for(var i = 0; i < $scope.players.length; i++){
+    function deal() {
+        for (var i = 0; i < $scope.players.length; i++) {
             var currentPlayer = $scope.players[i];
-            while(currentPlayer.hand.length < 6){
+            while (currentPlayer.hand.length < 6) {
                 currentPlayer.hand.push(takeCard());
             }
         }
     }
-    
-    
-    function Player(name, color){
+
+
+    function Player(name, color) {
         var player = this;
         player.name = name;
         player.color = color;
         player.immunities = {};
         player.hazards = {};
         player.limit = false;
-        player.distance =  0;
+        player.distance = 0;
         player.isStopped = true;
         player.hand = [];
         player.score = 0;
-        
-        player.setImmunity = function(type){
+
+        player.setImmunity = function (type) {
             player.immunities[type] = true;
         }
-        
-        player.addPenalty = function(value){
+
+        player.addPenalty = function (value) {
             player.score -= value;
         }
-        
-        player.move = function(distance){
+
+        player.move = function (distance) {
             player.distance += distance;
         }
-        
-        player.setHazard = function(type){
+
+        player.setHazard = function (type) {
             player.hazards[type] = true;
         }
-        
-        player.removeHazard = function(type){
+
+        player.removeHazard = function (type) {
             player.hazards[type] = false;
         }
-        
-        player.stopped = function(value){  
+
+        player.stopped = function (value) {
             player.isStopped = value;
         }
-        
-        player.speedLimit = function(value){
+
+        player.speedLimit = function (value) {
             player.limit = value;
         }
     }
-    
-    
+
+
     new Game({
         totalPlayers: 3
     })
-    
+
 });
 
 
@@ -124,7 +131,7 @@ app.service('CardService', function () {
         },
         img: base + '100-mile.png',
         quantity: 12
-        }, {
+    }, {
             title: '200 Miles',
             effect: function (player) {
                 player.move(200);

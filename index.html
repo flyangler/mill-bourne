@@ -1,53 +1,53 @@
 <html ng-app="millBourne">
+
 <head>
     <meta charset="UTF-8">
     <title>Mill Bourne Card Game</title>
-    
-<!------Bootstrap---------->
+
+    <!------Bootstrap---------->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-<!--------Our Style-------->
-<link rel="stylesheet" href="assets/styles/style.css">
+    <!--------Our Style-------->
+    <link rel="stylesheet" href="assets/styles/style.css">
 
 </head>
 
-<body ng-controller="MainController as mc">
-<<<<<<< HEAD
-
-    {{2+8}}
-    {{mc.test}}
-    <button ng-"click=playCard" ng-if activeCard && target>play  {{active.card.title}} for  {{currentTarget.name}}</button>
-    <ul>
-        
-=======
+<body ng-controller="MainController as mc" class="container-fluid">
+    <button ng-click="playCard()" ng-if="mc.activeCard && mc.currentTarget">Play {{mc.activeCard.title}} for {{mc.currentTarget.name}}</button>
     total Cards: {{deck.length}}
-    <button ng-click="playCard()">PLAY {{mc.activeCard.title}} for {{mc.currentTarget.name}}</button>
-    <ul>
-        <li ng-repeat="player in players">
-            <div style="background-color: {{player.color}}">
-                <h3 ng-click="mc.currentTarget = player">{{player.name}} has Traveled: {{player.distance}}km</h3>
-                <ul class="list-inline">
-                    <li class="list-group-item card" ng-repeat="card in player.hand" ng-click="mc.activeCard = card">
-                        <img ng-src="{{card.img}}" alt="{{card.title}}" height="120">
-                    </li>
-                </ul>
+
+    <div class="row" ng-repeat="player in players" style="background-color: {{player.color}}">
+        <div class="col-sm-12">
+            <div class="background player col-xs-2 text-right"  ng-click="mc.currentTarget = player">
+                <p class ="player">{{player.name}}</p><br>
+                <p class ="player"> Has Traveled: {{player.distance}} km</p>
+                <p class ="player"> Stopped: {{player.isStopped}}</p>
+                <p class ="player"> Immunities: {{player.immunities}}</p>
+                <p class ="player">Limit: {{player.limit}}</p>
+                <p class ="player">Hazard Condition:{{player.hazards}}</p>
             </div>
-        </li>
-    </ul>
-     
->>>>>>> efbd542a74fb991fc0906ddd7502c76ee5304e8a
+            <div class="list-inline col-sm-10">
+                <div class="list-group-item card" ng-repeat="card in player.hand" ng-click="mc.activeCard = card">
+                    <img ng-src="{{card.img}}" alt="{{card.title}}" height="200">
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!--JQuery-->
     <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
     <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-    
+
     <!--Bootstrap-->
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-    
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+    crossorigin="anonymous"></script>
+
     <!--Angular-->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0-rc.2/angular.min.js"></script>
 
     <!--Our Scripts-->
     <script src="app/app.js"></script>
     <script src="app/components/main-controller.js"></script>
- 
+
 </body>
+
 </html>
