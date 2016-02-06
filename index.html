@@ -13,6 +13,7 @@
 
 <body ng-controller="MainController as mc" class="container-fluid">
     <!--//start of next play splash screen//-->
+    <div class="alert alert-danger" ng-if="effectError">{{effectError.error}}</div>
     <div class="nextPlayer" ng-show="readyNext">
         <div class="text-center">
             <a ng-click="startTurn()"><h1 class="ready" >Are you Ready to go the distance {{nextPlayer.name}}?</h1>
