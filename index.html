@@ -15,8 +15,10 @@
     <!--//start of next play splash screen//-->
     <div class="alert alert-danger" ng-if="effectError">{{effectError.error}}</div>
     <div class="nextPlayer" ng-show="readyNext">
-        <button ng-click="startTurn()">Click here to resume</button>
-        <h1>Are you Ready to go the distance {{nextPlayer.name}}?</h1>
+        <div class="text-center">
+            <a ng-click="startTurn()"><h1 class="ready" >Are you Ready to go the distance {{nextPlayer.name}}?</h1>
+            <img src="assets/img/ready.png"  alt="hot chick" align="middle"></a>
+        </div>
     </div>
     <!--end splash-->
     <button ng-click="playCard()" ng-if="mc.activeCard && mc.currentTarget">Play {{mc.activeCard.title}} for {{mc.currentTarget.name}}</button>
