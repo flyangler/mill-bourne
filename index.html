@@ -22,7 +22,70 @@
     <button ng-click="playCard()" ng-if="mc.activeCard && mc.currentTarget">Play {{mc.activeCard.title}} for {{mc.currentTarget.name}}</button>
     total Cards: {{deck.length}}
 
-    <div class="row" ng-repeat="player in players" style="background-color: {{player.color}}">
+
+    <div class="row">
+        <div class="panel panel-default col-sm-4" ng-click="mc.currentTarget = player" ng-repeat="player in players" ng-if="player !== activePlayer">
+            <div class="panel-heading">
+                <h3>{{player.name}}</h3>
+                <p class="player">Traveled: {{player.distance}} km</p>
+            </div>
+            <div class="panel-body">
+                <div class="playmat">
+                    <div class="cards">
+                        <div class="card-container">
+                            <div ng-repeat="safetyCard in player.table.safties">
+                                <img ng-src="{{safetyCard.img}}" alt="{{safetyCard.title}}" height="90">
+                            </div>
+                        </div>
+                        <div class="card-container">
+                            <div ng-repeat="hazardCard in player.table.hazards">
+                                <img ng-src="{{hazardCard.img}}" alt="{{hazardCard.title}}" height="90">
+                            </div>
+                        </div>
+                        <div class="card-container">
+                            <div ng-repeat="limitCard in player.table.limits">
+                                <img ng-src="{{limitCard.img}}" alt="{{limitCard.title}}" height="90">
+                            </div>
+                        </div>
+                        <div class="card-container">
+                            <div ng-repeat="driveCard in player.table.drive">
+                                <img ng-src="{{driveCard.img}}" alt="{{driveCard.title}}" height="90">
+                            </div>
+                        </div>
+                        <div class="card-container">
+                            <div ng-repeat="miles in player.table.miles">
+                                <div ng-repeat="mileCard in miles">
+                                    <img ng-src="{{mileCard.img}}" alt="{{mileCard.title}}" height="90">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        DECK HERE
+    </div>
+
+    <div class="row">
+        <div class="background player col-xs-2 text-right" ng-click="mc.currentTarget = activePlayer">
+            <p class="player">{{activePlayer.name}}</p>
+            <p class="player">Has Traveled: {{activePlayer.distance}} km</p>
+            <p class="player">Stopped: {{activePlayer.isStopped}}</p>
+            <p class="player">Immunities: {{activePlayer.immunities}}</p>
+            <p class="player">Limit: {{activePlayer.limit}}</p>
+            <p class="player">Hazard Condition:{{activePlayer.hazards}}</p>
+        </div>
+        <div class="list-inline col-sm-10">
+            <div class="list-group-item card" ng-class="{active:mc.activeCard === card}" ng-repeat="card in activePlayer.hand" ng-click="mc.activeCard = card">
+                <img ng-src="{{card.img}}" alt="{{card.title}}" height="200">
+            </div>
+        </div>
+    </div>
+
+    <!--<div class="row" ng-repeat="player in players" style="background-color: {{player.color}}">
         <div class="col-sm-12">
             <div class="background player col-xs-2 text-right" ng-click="mc.currentTarget = player">
                 <p class="player">{{player.name}}</p>
@@ -43,7 +106,7 @@
     </div>
     <a class="trash" ng-click='discard(mc.activeCard)'>
         <img src="assets/img/trashcan.png" alt="trash can">
-    </a>
+    </a>-->
     <!--JQuery-->
     <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
     <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>

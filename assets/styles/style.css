@@ -46,3 +46,22 @@ z-index: 99999;
 .trash img{
     height:100px;
 }
+
+.playmat{
+   padding: 8px;
+   border: 1px solid #e3e3e3;
+   min-height: 250px;
+   clear: both;
+}
+
+.card-container {
+  height: 90px; 
+  z-index: 0;   
+  position: relative;
+  display: inline-block;
+  float: left;  
+}
+.card-container img:nth-child(1n+2){
+    margin-top: -70px;
+    margin-right: 3px;
+}

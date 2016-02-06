@@ -31,12 +31,15 @@ app.controller('MainController', function ($scope, CardService) {
             return;
         }
         
-        for (var i = 0; i < $scope.activePlayer.hand.length; i++) {
-            var card = $scope.activePlayer.hand[i];
-            if (mc.activeCard === card) {
-                $scope.activePlayer.hand.splice($scope.activePlayer.hand.indexOf(card), 1)
-            }
+        if(mc.activeCard.type === 'miles'){
+            mc.currentTarget.table.miles[mc.activeCard.title].push(mc.activeCard);    
+        } else {
+            mc.currentTarget.table[mc.activeCard.type].push(mc.activeCard)
         }
+        
+        var activeCardIndex = $scope.activePlayer.hand.indexOf(mc.activeCard);
+        $scope.activePlayer.hand.splice(activeCardIndex, 1);
+        
         mc.activeCard = '';
         mc.currentTarget = '';
         mc.discard = '';
@@ -81,8 +84,6 @@ app.controller('MainController', function ($scope, CardService) {
         }
     }
     
-    // game.isValidPlay(card, player)
-    
     function deal() {
         for (var i = 0; i < $scope.players.length; i++) {
             var currentPlayer = $scope.players[i];
@@ -91,7 +92,6 @@ app.controller('MainController', function ($scope, CardService) {
             }
         }
     }
-
 
     function Player(name, color) {
         var player = this;
@@ -104,6 +104,19 @@ app.controller('MainController', function ($scope, CardService) {
         player.isStopped = true;
         player.hand = [];
         player.score = 0;
+        player.table = {
+            hazards: [],
+            limits: [],
+            drive: [],
+            miles: {
+                "25": [],
+                "50": [],
+                "75": [],
+                "100": [],
+                "200": []
+            },
+            safeties: []
+        }
 
         player.setImmunity = function (type) {
             player.immunities[type] = true;
@@ -201,14 +214,15 @@ app.service('CardService', function () {
     var base = 'assets/img/cards/'
     // var cardback = base + 'back.png';
     var cards = [{
-        title: '100 Miles',
+        title: '100',
         effect: function (player) {
            return player.move(100);
         },
         img: base + '100-mile.png',
-        quantity: 12
+        quantity: 12,
+        type: 'miles'
     }, {
-            title: '200 Miles',
+            title: '200',
             effect: function (player) {
 
                 var effect = player.move(200);
@@ -219,28 +233,32 @@ app.service('CardService', function () {
                 player.addPenalty(300);
             },
             img: base + '200-mile.png',
-            quantity: 4
+            quantity: 4,
+            type: 'miles'
         }, {
-            title: '50 Miles',
+            title: '50',
             effect: function (player) {
                 return player.move(50);
             },
             img: base + '50-mile.png',
-            quantity: 10
+            quantity: 10,
+            type: 'miles'
         }, {
-            title: '75 Miles',
+            title: '75',
             effect: function (player) {
                 return player.move(75);
             },
             img: base + '75-mile.png',
-            quantity: 10
+            quantity: 10,
+            type: 'miles'
         }, {
-            title: '25 Miles',
+            title: '25',
             effect: function (player) {
                 return player.move(25);
             },
             img: base + '25-mile.png',
-            quantity: 10
+            quantity: 10,
+            type: 'miles'
         }, {
             title: 'Accident',
             effect: function (player) {
@@ -251,7 +269,8 @@ app.service('CardService', function () {
                 player.stopped(true);
             },
             img: base + 'accident.png',
-            quantity: 3
+            quantity: 3,
+            type: 'hazards'
         }, {
             title: 'Out of Gas',
             effect: function (player) {
@@ -262,7 +281,8 @@ app.service('CardService', function () {
                 player.stopped(true);
             },
             img: base + 'out-of-gas.png',
-            quantity: 3
+            quantity: 3,
+            type: 'hazards'
         }, {
             title: 'Flat Tire',
             effect: function (player) {
@@ -273,56 +293,64 @@ app.service('CardService', function () {
                 player.stopped(true);
             },
             img: base + 'flat-tire.png',
-            quantity: 3
+            quantity: 3,
+            type: 'hazards'
         }, {
             title: 'Speed Limit',
             effect: function (player) {
                 return player.speedLimit(true);
             },
             img: base + 'speed-limit.png',
-            quantity: 4
+            quantity: 4,
+            type: 'limits'
         }, {
             title: 'Red Light',
             effect: function (player) {
                 return player.stopped(true);
             },
             img: base + 'stop.png',
-            quantity: 5
+            quantity: 5,
+            type: 'drive'
         }, {
             title: 'End of Limit',
             effect: function (player) {
                 return player.speedLimit(false);
             },
             img: base + 'end-of-limit.png',
-            quantity: 6
+            quantity: 6,
+            type: 'limits'
         }, {
             title: 'Green Light',
             effect: function (player) {
                 return player.stopped(false);
             },
             img: base + 'go.png',
-            quantity: 14
+            quantity: 14,
+            type: 'drive'
         }, {
             title: 'Spare Tire',
             effect: function (player) {
                 return player.removeHazard('flat-tire');
             },
             img: base + 'spare-tire.png',
-            quantity: 6
+            quantity: 6,
+            type: 'hazards'
         }, {
             title: 'Gasoline',
             effect: function (player) {
                 return player.removeHazard('out-of-gas');
             },
             img: base + 'gasoline.png',
-            quantity: 6
+            quantity: 6,
+            type: 'hazards'
         }, {
             title: 'Repairs',
             effect: function (player) {
                 return player.removeHazard('accident');
             },
             img: base + 'repairs.png',
-            quantity: 6
+            quantity: 6,
+            type: 'hazards'
         }, {
             title: 'Extra Tank',
             effect: function (player) {
@@ -330,7 +358,8 @@ app.service('CardService', function () {
                 player.removeHazard('out-of-gas');
             },
             img: base + 'extra-tank.png',
-            quantity: 1
+            quantity: 1,
+            type: 'safeties'
         }, {
             title: 'Puncture Proof',
             effect: function (player) {
@@ -338,7 +367,8 @@ app.service('CardService', function () {
                 player.removeHazard('flat-tire');
             },
             img: base + 'puncture-proof.png',
-            quantity: 1
+            quantity: 1,
+            type: 'safeties'
         }, {
             title: 'Driving Ace',
             effect: function (player) {
@@ -346,7 +376,8 @@ app.service('CardService', function () {
                 player.removeHazard('accident');
             },
             img: base + 'driving-ace.png',
-            quantity: 1
+            quantity: 1,
+            type: 'safeties'
         }, {
             title: 'Right of Way',
             effect: function (player) {
@@ -355,13 +386,15 @@ app.service('CardService', function () {
                 player.speedLimit(false);
             },
             img: base + 'right-of-way.png',
-            quantity: 1
+            quantity: 1,
+            type: 'safeties'
         }];
 
     var Card = function (card) {
         this.title = card.title;
         this.effect = card.effect;
         this.img = card.img;
+        this.type = card.type;
     }
 
     this.getDeck = function () {
