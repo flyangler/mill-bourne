@@ -8,11 +8,31 @@ color: black;
 }
 .card{
     display: inline-block;
+    margin:5px;
+    
 }
+/*.card:hover{
+    background-color: darkmagenta;
+    border:10px solid magenta;
+}*/
+.card.active{
+box-shadow: 1px 1px 1px black;    
+    
+}
+
 
 .background {
 background-image: url('/assets/img/cards/back3.png');
 background-repeat:no-repeat;
 height: 200px;
 margin-top: 10px 
+}
+.nextPlayer{
+background-color: darkmagenta;
+position: absolute;
+top: 0;
+bottom: 0;
+left: 0;
+right: 0;
+z-index: 99999;
 }

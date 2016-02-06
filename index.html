@@ -12,6 +12,10 @@
 </head>
 
 <body ng-controller="MainController as mc" class="container-fluid">
+    <div class="nextPlayer" ng-show="readyNext">
+        <button ng-click="startTurn()">Click here to resume</button>
+    <h1>Are you Ready to go the distance {{nextPlayer.name}}?</h1>    
+    </div>
     <button ng-click="playCard()" ng-if="mc.activeCard && mc.currentTarget">Play {{mc.activeCard.title}} for {{mc.currentTarget.name}}</button>
     total Cards: {{deck.length}}
 
@@ -26,8 +30,9 @@
                 <p class ="player">Hazard Condition:{{player.hazards}}</p>
             </div>
             <div class="list-inline col-sm-10">
-                <div class="list-group-item card" ng-repeat="card in player.hand" ng-click="mc.activeCard = card">
-                    <img ng-src="{{card.img}}" alt="{{card.title}}" height="200">
+                <div class="list-group-item card" ng-class="{active:mc.activeCard === card}" ng-repeat="card in player.hand" ng-click="mc.activeCard = card">
+                    <img ng-if="activePlayer !== player" src="assets/img/cards/back.png" alt="{{card.title}}" height="200">
+                    <img ng-if="activePlayer === player" ng-src="{{card.img}}" alt="{{card.title}}" height="200">
                 </div>
             </div>
         </div>

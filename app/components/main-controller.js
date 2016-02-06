@@ -2,19 +2,20 @@ app.controller('MainController', function ($scope, CardService) {
     var mc = this;
     function Game(options) {
         $scope.deck = CardService.getDeck();
-        $scope.players = [];  // {name:"John", color:"black"},{name:"Sara", color:"Peru"},{name:"Jake", color:"green"}
+        $scope.players = [new Player("John", "black"), new Player("Sara", "peru"),new Player("Tim", "red")];  // {name:"John", color:"black"},{name:"Sara", color:"Peru"},{name:"Jake", color:"green"}
         $scope.activePlayerIndex = 0;
         var playerCount = options.totalPlayers
-        while (playerCount) {
-            $scope.players.push(new Player(prompt("Player Name"), prompt("WHAT IS YOUR FAVORITE COLOR?")));
-            playerCount--;
-        }
+        // while (playerCount) {
+        //     $scope.players.push(new Player(prompt("Player Name"), prompt("WHAT IS YOUR FAVORITE COLOR?")));
+        //     playerCount--;
+        // }
 
         deal();
-        startTurn();
+        $scope.startTurn();
     }
 
-    function startTurn() {
+    $scope.startTurn = function() {
+        $scope.readyNext = false;
         $scope.activePlayer = $scope.players[$scope.activePlayerIndex];
         $scope.activePlayer.hand.push(takeCard());
     }
@@ -30,7 +31,7 @@ app.controller('MainController', function ($scope, CardService) {
         if ($scope.activePlayerIndex > $scope.players.length - 1) {
             $scope.activePlayerIndex = 0;
         }
-
+        $scope.nextPlayer = $scope.players[$scope.activePlayerIndex]
         for (var i = 0; i < $scope.activePlayer.hand.length; i++) {
             var card = $scope.activePlayer.hand[i];
             if (mc.activeCard === card) {
@@ -42,8 +43,20 @@ app.controller('MainController', function ($scope, CardService) {
         mc.activeCard = '';
         mc.currentTarget = '';
         mc.discard = '';
-        startTurn();
+        nextPlayer();
+
     }
+    function nextPlayer() {
+        
+        //   if ($scope.activePlayerIndex > $scope.players.length - 1) {
+        //     $scope.activePlayerIndex = 0;
+        //   }
+        //   startTurn();
+        $scope.readyNext = true
+    }
+
+
+
 
     function victory(trip) {
         for (var i = 0; i < $scope.players.length; i++) {
@@ -120,10 +133,9 @@ app.controller('MainController', function ($scope, CardService) {
     })
 
 });
-
-
 app.service('CardService', function () {
     var base = 'assets/img/cards/'
+    // var cardback = base + 'back.png';
     var cards = [{
         title: '100 Miles',
         effect: function (player) {
