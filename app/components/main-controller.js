@@ -79,6 +79,7 @@ app.controller('MainController', function ($scope, CardService) {
     }
 
     function takeCard() {
+        
         if ($scope.deck.length > 0) {
             return $scope.deck.pop();
         }

@@ -3,32 +3,29 @@ font-weight: bolder;
 font-style: italic;
 font-size: 14px;
 color: black;
-
-
 }
 .card{
     display: inline-block;
     margin:5px;
     
 }
-/*.card:hover{
-    background-color: darkmagenta;
-    border:10px solid magenta;
-}*/
+.card:hover{
+    padding: 5px;
+    border:3px solid burlywood;
+}
 .card.active{
 box-shadow: 1px 1px 1px black;    
     
 }
-
-
 .background {
 background-image: url('/assets/img/cards/back3.png');
 background-repeat:no-repeat;
 height: 200px;
-margin-top: 10px 
+margin-top: 10px; 
 }
+
 .nextPlayer{
-background-color: darkgreen;
+background-color: #116C40;
 position: absolute;
 top: 0;
 bottom: 0;
@@ -37,6 +34,21 @@ right: 0;
 z-index: 99999;
 }
 
+.deck{
+    height:100px;
+    background-color: #116C40;
+    top: 20px;
+    right: 20px; 
+    float: right;   
+}
+.deck img{
+    height: 200px;
+}
+
+.deck.hover{
+    background-color: burlywood;
+    border: 7px stitched black;
+}
 .trash{
     height:100px;
     top: 20px;
@@ -45,6 +57,27 @@ z-index: 99999;
 }
 .trash img{
     height:100px;
+} 
+activePlaymat{
+   padding: 8px;
+   border: 1px solid #e3e3e3;
+   min-height: 150px;
+   clear: both;
+   background-color: #116C40;   
+}
+
+.playerCard-container {
+  height: 90px; 
+  z-index: 9;   
+  position: relative;
+  display: block;
+  float: left; 
+  padding-top: 70px; 
+
+}
+.playerCard-container img:nth-child(2n+1){
+    margin-top: -70px;
+    margin-right: 3px;
 }
 
 .playmat{
@@ -52,16 +85,18 @@ z-index: 99999;
    border: 1px solid #e3e3e3;
    min-height: 250px;
    clear: both;
+   background-color: #116C40;
 }
 
 .card-container {
   height: 90px; 
-  z-index: 0;   
+  z-index: 9;   
   position: relative;
-  display: inline-block;
-  float: left;  
+  display: block;
+  float: left; 
+  padding-top: 70px; 
 }
-.card-container img:nth-child(1n+2){
+.card-container img:nth-child(2n+1){
     margin-top: -70px;
     margin-right: 3px;
 }
